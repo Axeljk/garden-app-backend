@@ -1,0 +1,25 @@
+{
+  "name": "garden-app-backend",
+  "description": "MongoDB database backend for Garden App (WIP name).",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Axeljk/garden-app-backend.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Axeljk/garden-app-backend/issues"
+  },
+  "homepage": "https://github.com/Axeljk/garden-app-backend#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.18.1",
+    "mongoose": "^6.5.3"
+  }
+}
