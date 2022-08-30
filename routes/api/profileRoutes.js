@@ -34,8 +34,7 @@ router.get("/", (req, res) => {
  */
  router.post("/", (req, res) => {
 	Profile.create(req.body)
-		.then((profile) => {
-			console.log("PROFILE", profile);
+		.then(profile => {
 			const token = jwt.sign(
 				{
 					id: profile._id,
@@ -46,7 +45,6 @@ router.get("/", (req, res) => {
 				{
 					expiresIn: TOKEN_EXPIRATION
 				});
-			console.log("TOKEN", token);
 			return res.json({ token: token, profile: profile });
 		}).catch(err => res.status(500).json({ message: "An error occurred.", err }));
 });
@@ -65,10 +63,59 @@ router.get("/:id", (req, res) => {
  *	Profile POST route (log-in):
  */
 router.post("/:id", (req, res) => {
-	Profile.find({ _id: req.params.id })
-		.then((err, profile) => {
-			return res.json({profile});
+	Profile.findOne({ _id: req.params.id })
+		.then(profile => {
+			// Check id was found (exists) and the password matches.
+//			console.log("PROFILE", profile);
+			console.log("BODY:", req.body.password, "PROFILE:", profile.password)
+			if (!profile)
+				return res.status(401).json({ message: "Invalid credentials." });
+			else if (!bcrypt.compareSync(req.body.password, profile.password))
+				return res.status(401).json({ message: "Invalid credentials." });
+
+			return res.json({  profile: profile });
 		}).catch(err => res.status(500).json({ message: "An error occurred.", err }));
 });
+
+/*
+ *	Profile PUT route (edit profile/settings):
+ *		- Get data from token (using secret pw) and compare to url to verify correct user.
+ */
+router.put("/:id", (req, res) => {
+	const token = req.headers.authorization.split(" ")[1];
+	const tokenData = jwt.verify(token, process.env.DB_SECRET);
+
+	if (req.params.id === tokenData.id) {
+		Profile.findOneAndUpdate({ _id: req.params.id }, { $set: req.body })
+			.then(profile => {
+				if (profile)
+					return res.json(profile);
+				else
+					return res.status(404).json({ message: "User not found." });
+			}).catch(err => res.status(500).json({ message: "An error occurred.", err }));
+	} else
+		return res.status(401).json({ message: "Invalid credientials." });
+});
+
+/*
+ *	Profile DELETE route:
+ *		- Get data from token (using secret pw) and compare to url to verify correct user.
+ */
+router.delete("/:id", (req, res) => {
+	// Verify this is the correct profile/client has permission.
+	const token = req.headers.authorization.split(" ")[1];
+	const tokenData = jwt.verify(token, process.env.DB_SECRET);
+
+	if (req.params.id === tokenData.id) {
+		Profile.findOneAndRemove({ _id: req.params.id })
+			.then(profile => {
+				if (profile)
+					return res.json(profile);
+				else
+					return res.status(404).json({ message: "User not found." });
+			}).catch(err => res.status(500).json({ message: "An error occurred.", err }));
+	} else
+		return res.status(401).json({ message: "An error occurred.", err });
+})
 
 module.exports = router;
