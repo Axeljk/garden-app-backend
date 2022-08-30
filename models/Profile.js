@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const { Schema, model } = require("mongoose");
 
 const profileSchema = new Schema(
@@ -45,7 +46,7 @@ profileSchema.pre('save', async function (next) {
     }
     next();
   });
-  
+
   // compare the incoming password with the hashed password
   profileSchema.methods.isCorrectPassword = async function (password) {
     return bcrypt.compare(password, this.password);

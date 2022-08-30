@@ -25,7 +25,7 @@ const layoutSchema = new Schema(
     },
 
     current: {
-      Type: Boolean,
+      type: Boolean,
       required: true,
       default: true,
     },
