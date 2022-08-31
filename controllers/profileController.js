@@ -56,13 +56,11 @@ module.exports = {
 
   // Existing user login
   loginProfile(req, res) {
-    Profile.findOne({ _id: req.params.profileId })
+    Profile.findOne({ email: req.body.email })
       .then((profile) => {
         // Check id was found (exists) and the password matches.
-        //			console.log("PROFILE", profile);
-        console.log("BODY:", req.body.password, "PROFILE:", profile.password);
         if (!profile)
-          return res.status(401).json({ message: "Invalid credentials." });
+          return res.status(404).json({ message: "Profile not found." });
         else if (!bcrypt.compareSync(req.body.password, profile.password))
           return res.status(401).json({ message: "Invalid credentials." });
 
