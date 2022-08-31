@@ -1,11 +1,13 @@
 const express = require("express");
 const database = require("./config/connection");
 const routes = require("./routes");
+const cors = require("cors");
 
 const cwd = process.cwd();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 const app = express();
+app.use(cors());
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
