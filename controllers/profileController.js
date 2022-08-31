@@ -43,6 +43,16 @@ module.exports = {
       );
   },
 
+	checkToken(req, res) {
+		const token = req.headers.authorization?.split(" ")[1];
+
+		try {
+			res.json(jwt.verify(token, process.env.DB_SECRET));
+		} catch {
+			res.status(403).json({ message: "Access forbidden." });
+		}
+	},
+
   // Get a specific user profile
   getSingleProfile(req, res) {
     Profile.find({ _id: req.params.profileId })
@@ -64,7 +74,19 @@ module.exports = {
         else if (!bcrypt.compareSync(req.body.password, profile.password))
           return res.status(401).json({ message: "Invalid credentials." });
 
-        return res.json({ profile: profile });
+		const token = jwt.sign(
+			{
+				id: profile._id,
+				username: profile.username,
+				email: profile.email,
+			},
+			process.env.DB_SECRET,
+			{
+				expiresIn: TOKEN_EXPIRATION,
+			}
+		);
+
+        return res.json({ token: token, profile: profile });
       })
       .catch((err) =>
         res.status(500).json({ message: "An error occurred.", err })
