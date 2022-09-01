@@ -18,6 +18,17 @@ const profileSchema = new Schema(
       type: String,
       required: true,
     },
+    location: {
+      city:{
+        type: String,
+        required: true
+      },
+      // Two-character US state abbreviation
+      state:{
+        type: String,
+        required: true
+      }
+    },
     layouts: [
       {
         type: Schema.Types.ObjectId,

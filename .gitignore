@@ -105,3 +105,5 @@ dist
 
 # VS Code color file
 .vscode
+
+.env
