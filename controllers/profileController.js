@@ -30,6 +30,10 @@ module.exports = {
             id: profile._id,
             username: profile.username,
             email: profile.email,
+            location:{
+            city: profile.city,
+            state: profile.state
+            }
           },
           process.env.DB_SECRET,
           {
