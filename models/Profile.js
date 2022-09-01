@@ -21,12 +21,10 @@ const profileSchema = new Schema(
     location: {
       city:{
         type: String,
-        required: true
       },
       // Two-character US state abbreviation
       state:{
         type: String,
-        required: true
       }
     },
     layouts: [
