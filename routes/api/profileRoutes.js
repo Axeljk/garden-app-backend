@@ -2,8 +2,9 @@ const router = require("express").Router();
 module.exports = router;
 
 const {
-  getAllProfiles,
-  createProfile,
+    getAllProfiles,
+    createProfile,
+    checkToken,
     getSingleProfile,
     loginProfile,
     updateProfile,
@@ -13,11 +14,16 @@ const {
 // /api/profiles
 router.route("/").get(getAllProfiles).post(createProfile);
 
+// /api/profiles/token
+router.route("/token").get(checkToken);
+
+// /api/profiles/login
+router.route("/login").post(loginProfile);
+
 ///api/profiles/:profileId
 router
   .route("/:profileId")
   .get(getSingleProfile)
-  .post(loginProfile)
   .put(updateProfile)
   .delete(deleteProfile);
 
