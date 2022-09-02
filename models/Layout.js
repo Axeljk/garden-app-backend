@@ -2,6 +2,9 @@ const { Schema, model } = require("mongoose");
 
 const layoutSchema = new Schema(
   {
+    name: {
+      type: String
+    },
     height: {
       type: Number,
       required: true,
