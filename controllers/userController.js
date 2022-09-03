@@ -103,7 +103,7 @@ module.exports = {
     const token = req.headers.authorization.split(" ")[1];
     const tokenData = jwt.verify(token, process.env.DB_SECRET);
 
-    if (req.params.id === tokenData.id) {
+    if (req.params.userId === tokenData.id) {
       User.findOneAndUpdate(
         { _id: req.params.userId },
         { $set: req.body }
@@ -124,7 +124,7 @@ module.exports = {
     const token = req.headers.authorization.split(" ")[1];
     const tokenData = jwt.verify(token, process.env.DB_SECRET);
 
-    if (req.params.id === tokenData.id) {
+    if (req.params.userId === tokenData.id) {
       User.findOneAndRemove({ _id: req.params.userId })
         .then((user) => {
           if (user) return res.json(user);
