@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const speciesSchema = new Schema({
+const plantSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -15,18 +15,27 @@ const speciesSchema = new Schema({
   grownWidth: {
     type: Number,
   },
-  timeToBloom: {
-    type: Number,
+  harvestBloomDate: {
+    type: Date,
   },
   lifespan: {
     type: Number,
   },
   hardinessZone: {
-    type: Number,
+    type: String,
   },
   waterNeeded: {
-    type: Number,
+    type: String,
   },
+  lightRequirement: {
+    type: String,
+  },
+  soilType: {
+    type: String
+  },
+  userNotes: {
+    type: String
+  }
 },
 
 {
@@ -36,7 +45,7 @@ const speciesSchema = new Schema({
     id: false,
   }
   );
-  const Species = model("Species", speciesSchema);
+  const Plant = model("Plant", plantSchema);
 
-module.exports = Species;
+module.exports = Plant;
 
