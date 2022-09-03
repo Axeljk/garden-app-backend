@@ -18,8 +18,4 @@ router
   .put(updatePlant)
   .delete(deletePlant);
 
-// TODO: For future use
-// // /api/plants/:plantId/species
-// router.route("/:plantId/species").post(addSpecies);
-
 module.exports = router;

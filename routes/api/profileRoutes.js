@@ -2,29 +2,29 @@ const router = require("express").Router();
 module.exports = router;
 
 const {
-    getAllProfiles,
-    createProfile,
+    getAllUsers,
+    createUser,
     checkToken,
-    getSingleProfile,
-    loginProfile,
-    updateProfile,
-    deleteProfile,
-} = require("../../controllers/profileController.js");
+    getSingleUser,
+    loginUser,
+    updateUser,
+    deleteUser,
+} = require("../../controllers/userController.js");
 
-// /api/profiles
-router.route("/").get(getAllProfiles).post(createProfile);
+// /api/users
+router.route("/").get(getAllUsers).post(createUser);
 
-// /api/profiles/token
+// /api/users/token
 router.route("/token").get(checkToken);
 
-// /api/profiles/login
-router.route("/login").post(loginProfile);
+// /api/users/login
+router.route("/login").post(loginUser);
 
-///api/profiles/:profileId
+///api/users/:userId
 router
-  .route("/:profileId")
-  .get(getSingleProfile)
-  .put(updateProfile)
-  .delete(deleteProfile);
+  .route("/:userId")
+  .get(getSingleUser)
+  .put(updateUser)
+  .delete(deleteUser);
 
 module.exports = router;

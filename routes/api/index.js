@@ -1,10 +1,12 @@
 const router = require('express').Router();
-const profileRoutes = require("./profileRoutes");
-const layoutRoutes = require("./layoutRoutes");
+const userRoutes = require("./userRoutes");
+const gardenRoutes = require("./gardenRoutes");
+const specimenRoutes = require("./specimenRoutes");
 const plantRoutes = require("./plantRoutes");
 
-router.use("/profiles", profileRoutes);
-router.use('/layouts', layoutRoutes);
+router.use("/users", userRoutes);
+router.use('/gardens', gardenRoutes);
+router.use('/specimens', specimenRoutes);
 router.use('/plants', plantRoutes);
 
 module.exports = router;
