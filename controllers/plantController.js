@@ -1,5 +1,5 @@
 const { ObjectId } = require("mongoose").Types;
-const { Profile, Plant, Layout, Species } = require("../models");
+const { User, Plant, Specimen } = require("../models");
 
 module.exports = {
   
@@ -18,20 +18,20 @@ module.exports = {
         res.status(500).json(err);
       });
   },
-  // Create a plant attached to a profile
+  // Create a plant attached to a user
   createPlant(req, res) {
     Plant.create(req.body)
       .then((plant) => {
-        return Profile.findOneAndUpdate(
-          { _id: req.body.ProfileId },
+        return User.findOneAndUpdate(
+          { _id: req.body.UserId },
           { $push: { plants: plant._id } },
           { new: true }
         );
       })
-      .then((profile) =>
-        !profile
+      .then((user) =>
+        !user
           ? res.status(404).json({
-              message: "Plant created, but found no profile with that ID",
+              message: "Plant created, but found no user with that ID",
             })
           : res.json("Posted the plant 🎉")
       )
@@ -65,6 +65,4 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-
-  // TODO: Add species to plant
 };

@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const { Schema, model } = require("mongoose");
 
-const profileSchema = new Schema(
+const userSchema = new Schema(
   {
     username: {
       type: String,
@@ -22,15 +22,14 @@ const profileSchema = new Schema(
       city:{
         type: String,
       },
-      // Two-character US state abbreviation
       state:{
         type: String,
       }
     },
-    layouts: [
+    gardens: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Layout",
+        ref: "Garden",
       },
     ],
     plants: [
@@ -48,7 +47,7 @@ const profileSchema = new Schema(
   }
 );
 
-profileSchema.pre('save', async function (next) {
+userSchema.pre('save', async function (next) {
     if (this.isNew || this.isModified('password')) {
       const saltRounds = 10;
       this.password = await bcrypt.hash(this.password, saltRounds);
@@ -57,9 +56,9 @@ profileSchema.pre('save', async function (next) {
   });
 
   // compare the incoming password with the hashed password
-  profileSchema.methods.isCorrectPassword = async function (password) {
+  userSchema.methods.isCorrectPassword = async function (password) {
     return bcrypt.compare(password, this.password);
   };
 
-const Profile = model("Profile", profileSchema);
-module.exports = Profile;
+const User = model("User", userSchema);
+module.exports = User;

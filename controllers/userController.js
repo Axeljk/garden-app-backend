@@ -2,37 +2,38 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { Profile } = require("../models");
+const { User } = require("../models");
 
 const TOKEN_EXPIRATION = "2h";
 
 module.exports = {
 
 
-  // Get all user profiles
-  getAllProfiles(req, res) {
-    Profile.find({})
-      .populate("layouts")
-      .then((profiles) => {
-        return res.json(profiles);
+  // Get all user users
+  getAllUsers(req, res) {
+    User.find({})
+      .populate("gardens")
+      .then((users) => {
+        return res.json(users);
       })
       .catch((err) =>
         res.status(500).json({ message: "An error occurred.", err })
       );
   },
 
- // Add a user profile (sign up)
-  createProfile(req, res) {
-    Profile.create(req.body)
-      .then((profile) => {
+ // Add a user (sign up)
+  createUser(req, res) {
+    User.create(req.body)
+      .then((user) => {
         const token = jwt.sign(
           {
-            id: profile._id,
-            username: profile.username,
-            email: profile.email,
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            password: user.password,
             location:{
-            city: profile.city,
-            state: profile.state
+            city: user.city,
+            state: user.state
             }
           },
           process.env.DB_SECRET,
@@ -40,7 +41,7 @@ module.exports = {
             expiresIn: TOKEN_EXPIRATION,
           }
         );
-        return res.json({ token: token, profile: profile });
+        return res.json({ token: token, user: user });
       })
       .catch((err) =>
         res.status(500).json({ message: "An error occurred.", err })
@@ -57,11 +58,11 @@ module.exports = {
 		}
 	},
 
-  // Get a specific user profile
-  getSingleProfile(req, res) {
-    Profile.find({ _id: req.params.profileId })
-      .then((profile) => {
-        return res.json(profile);
+  // Get a specific user
+  getSingleUser(req, res) {
+    User.find({ _id: req.params.userId })
+      .then((user) => {
+        return res.json(user);
       })
       .catch((err) =>
         res.status(500).json({ message: "An error occurred.", err })
@@ -69,20 +70,20 @@ module.exports = {
   },
 
   // Existing user login
-  loginProfile(req, res) {
-    Profile.findOne({ email: req.body.email })
-      .then((profile) => {
+  loginUser(req, res) {
+    User.findOne({ email: req.body.email })
+      .then((user) => {
         // Check id was found (exists) and the password matches.
-        if (!profile)
-          return res.status(404).json({ message: "Profile not found." });
-        else if (!bcrypt.compareSync(req.body.password, profile.password))
+        if (!user)
+          return res.status(404).json({ message: "User not found." });
+        else if (!bcrypt.compareSync(req.body.password, user.password))
           return res.status(401).json({ message: "Invalid credentials." });
 
 		const token = jwt.sign(
 			{
-				id: profile._id,
-				username: profile.username,
-				email: profile.email,
+				id: user._id,
+				username: user.username,
+				email: user.email,
 			},
 			process.env.DB_SECRET,
 			{
@@ -90,25 +91,25 @@ module.exports = {
 			}
 		);
 
-        return res.json({ token: token, profile: profile });
+        return res.json({ token: token, user: user });
       })
       .catch((err) =>
         res.status(500).json({ message: "An error occurred.", err })
       );
   },
 
-  // Edit profile
-  updateProfile(req, res) {
+  // Edit user
+  updateUser(req, res) {
     const token = req.headers.authorization.split(" ")[1];
     const tokenData = jwt.verify(token, process.env.DB_SECRET);
 
     if (req.params.id === tokenData.id) {
-      Profile.findOneAndUpdate(
-        { _id: req.params.profileId },
+      User.findOneAndUpdate(
+        { _id: req.params.userId },
         { $set: req.body }
       )
-        .then((profile) => {
-          if (profile) return res.json(profile);
+        .then((user) => {
+          if (user) return res.json(user);
           else return res.status(404).json({ message: "User not found." });
         })
         .catch((err) =>
@@ -117,16 +118,16 @@ module.exports = {
     } else return res.status(401).json({ message: "Invalid credientials." });
   },
 
-  // Delete profile
-  deleteProfile(req, res) {
-    // Verify this is the correct profile/client has permission.
+  // Delete user
+  deleteUser(req, res) {
+    // Verify this is the correct user/client has permission.
     const token = req.headers.authorization.split(" ")[1];
     const tokenData = jwt.verify(token, process.env.DB_SECRET);
 
     if (req.params.id === tokenData.id) {
-      Profile.findOneAndRemove({ _id: req.params.profileId })
-        .then((profile) => {
-          if (profile) return res.json(profile);
+      User.findOneAndRemove({ _id: req.params.userId })
+        .then((user) => {
+          if (user) return res.json(user);
           else return res.status(404).json({ message: "User not found." });
         })
         .catch((err) =>
