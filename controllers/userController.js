@@ -12,7 +12,7 @@ module.exports = {
   // Get all user users
   getAllUsers(req, res) {
     User.find({})
-      .populate("layouts")
+      .populate("gardens")
       .then((users) => {
         return res.json(users);
       })

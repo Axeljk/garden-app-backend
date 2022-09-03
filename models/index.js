@@ -1,6 +1,6 @@
-const Layout = require("./Layout");
+const Garden = require("./Garden");
 const Plant = require("./Plant");
-const Profile = require("./Profile");
-const Species = require("./Species");
+const User = require("./User");
+const Specimen = require("./Specimen");
 
-module.exports = { Layout, Plant, Profile, Species };
+module.exports = { Garden, Plant, User, Specimen };
