@@ -1,10 +1,15 @@
 const { Schema, model } = require("mongoose");
 
-const layoutSchema = new Schema(
+const gardenSchema = new Schema(
   {
     name: {
       type: String
     },
+
+    description: {
+      type: String
+    },
+    
     height: {
       type: Number,
       required: true,
@@ -33,10 +38,10 @@ const layoutSchema = new Schema(
       default: true,
     },
 
-    plants: [
+    specimens: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Plant",
+        ref: "Specimen",
       },
     ],
   },
@@ -49,6 +54,6 @@ const layoutSchema = new Schema(
   }
 );
 
-const Layout = model("Layout", layoutSchema);
+const Garden = model("Garden", gardenSchema);
 
-module.exports = Layout;
+module.exports = Garden;
