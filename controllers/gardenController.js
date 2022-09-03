@@ -42,12 +42,11 @@ module.exports = {
 			if (!tokenData?.id)
 				return res.status(403).json({ message: "Unauthorized access." });
 
-			console.log("MADE IT TO CREATION")
 			// Create Garden and add it to the user's gardens foreign key.
 			const garden = await Garden.create(req.body);
 			if (!garden)
 				return res.status(401).json({ message: "Invalid information."});
-			console.log("GOT THIS FAR");
+
 			const user = await User.findOneAndUpdate(
 				{ _id: req.body.userId },
 				{ $push: { gardens: garden._id }},
