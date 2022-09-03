@@ -23,7 +23,7 @@ module.exports = {
     Plant.create(req.body)
       .then((plant) => {
         return User.findOneAndUpdate(
-          { _id: req.body.UserId },
+          { _id: req.body.userId },
           { $push: { plants: plant._id } },
           { new: true }
         );
