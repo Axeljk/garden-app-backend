@@ -60,7 +60,8 @@ module.exports = {
 
   // Get a specific user
   getSingleUser(req, res) {
-    User.find({ _id: req.params.userId })
+    User.findOne({ _id: req.params.userId })
+      .populate("gardens")
       .then((user) => {
         return res.json(user);
       })
