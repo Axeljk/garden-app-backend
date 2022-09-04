@@ -35,6 +35,10 @@ const plantSchema = new Schema({
   },
   userNotes: {
     type: String
+  },
+  imgLink :{
+    type: String,
+    default: "https://upload.wikimedia.org/wikipedia/commons/3/31/Diversity_of_plants_%28Streptophyta%29_version_2.png"
   }
 },
 
