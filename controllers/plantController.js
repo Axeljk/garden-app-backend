@@ -2,7 +2,7 @@ const { ObjectId } = require("mongoose").Types;
 const { User, Plant, Specimen } = require("../models");
 
 module.exports = {
-  
+
   // Get a plant
   getSinglePlant(req, res) {
     Plant.findOne({ _id: req.params.plantId })
@@ -22,18 +22,18 @@ module.exports = {
   createPlant(req, res) {
     Plant.create(req.body)
       .then((plant) => {
-        return User.findOneAndUpdate(
+        return [User.findOneAndUpdate(
           { _id: req.body.userId },
           { $push: { plants: plant._id } },
           { new: true }
-        );
+        ), plant]
       })
-      .then((user) =>
-        !user
+      .then((data) =>
+        !data[0]
           ? res.status(404).json({
               message: "Plant created, but found no user with that ID",
             })
-          : res.json("Posted the plant 🎉")
+          : res.json(data[1])
       )
       .catch((err) => {
         console.log(err);

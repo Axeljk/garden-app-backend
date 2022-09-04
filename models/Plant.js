@@ -6,8 +6,7 @@ const plantSchema = new Schema({
     required: true,
   },
   type: {
-    type: String,
-    required: true,
+    type: String
   },
   grownHeight: {
     type: Number,
