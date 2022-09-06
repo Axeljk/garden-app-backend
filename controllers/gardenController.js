@@ -23,7 +23,7 @@ module.exports = {
 				return res.status(403).json({ message: "Unauthorized access." });
 
 			// Return garden (if found), otherwise return error.
-			const garden = await Garden.findOne({ _id: gardenId });
+			const garden = await Garden.findOne({ _id: gardenId }).populate("specimens");
 			if (!garden)
 				return res.status(404).json({ message: "Garden not found." });
 			return res.json(garden);
