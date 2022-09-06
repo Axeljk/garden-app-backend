@@ -23,7 +23,7 @@ module.exports = {
     Specimen.create(req.body)
       .then((specimen) => {
         return Garden.findOneAndUpdate(
-          { _id: req.body.GardenId },
+          { _id: req.body.gardenId },
           { $push: { specimens: specimen._id } },
           { new: true }
         );
