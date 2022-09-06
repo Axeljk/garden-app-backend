@@ -2,7 +2,7 @@ const { ObjectId } = require("mongoose").Types;
 const { Plant, Garden } = require("../models");
 
 module.exports = {
-  
+
   // Get a specimen
   getSingleSpecimen(req, res) {
     Specimen.findOne({ _id: req.params.specimenId })
@@ -22,19 +22,19 @@ module.exports = {
   createSpecimen(req, res) {
     Specimen.create(req.body)
       .then((specimen) => {
-        return Garden.findOneAndUpdate(
+        Garden.findOneAndUpdate(
           { _id: req.body.gardenId },
           { $push: { specimens: specimen._id } },
           { new: true }
-        );
-      })
-      .then((garden) =>
-        !garden
+        ).then((garden) =>
+          !garden
           ? res.status(404).json({
               message: "Specimen created, but found no garden with that ID",
             })
           : res.json("Posted the specimen 🎉")
-      )
+      );
+      return specimen;
+      })
       .catch((err) => {
         console.log(err);
         return res.status(500).json(err);
