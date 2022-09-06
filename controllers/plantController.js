@@ -22,21 +22,22 @@ module.exports = {
   createPlant(req, res) {
     Plant.create(req.body)
       .then((plant) => {
-        return [User.findOneAndUpdate(
-          { _id: req.body.userId },
-          { $push: { plants: plant._id } },
-          { new: true }
-        ), plant]
+		return User.findOneAndUpdate(
+			{ _id: req.body.userId },
+			{ $push: { plants: plant._id } },
+			{ new: true }
+		  ).then(() => plant);
       })
-      .then((data) =>
-        !data[0]
-          ? res.status(404).json({
+      .then((data) => {
+        if (data)
+			return res.json(data);
+		else
+            res.status(404).json({
               message: "Plant created, but found no user with that ID",
             })
-          : res.json(data[1])
+		}
       )
       .catch((err) => {
-        console.log(err);
         return res.status(500).json(err);
       });
   },
