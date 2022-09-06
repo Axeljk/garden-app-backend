@@ -5,7 +5,7 @@ module.exports = {
 
   // Get a specimen
   getSingleSpecimen(req, res) {
-    Specimen.findOne({ _id: req.params.specimenId })
+    Specimen.findOne({ _id: req.params.specimenId }).populate("plant")
       .select("-__v")
       .then((specimen) => {
         if (!specimen) {
