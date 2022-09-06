@@ -22,10 +22,9 @@ module.exports = {
   createSpecimen(req, res) {
     Specimen.create(req.body)
       .then((specimen) => {
-		let index = `specimens.${req.body.index}`;
         Garden.findOneAndUpdate(
           { _id: req.body.gardenId },
-          { $set: { index : specimen._id } },
+          { $set: { ["specimens."+req.body.index] : specimen._id } },
           { new: true }
         ).then((garden) =>
           !garden
