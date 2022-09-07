@@ -1,4 +1,5 @@
 const { Schema, model, Types } = require("mongoose");
+const Mongoose = require("mongoose");
 
 const gardenSchema = new Schema(
   {
@@ -56,7 +57,7 @@ const gardenSchema = new Schema(
 
 gardenSchema.pre("save", async function(next) {
 	let size = this.width * this.height;
-	let defaultID = Types.ObjectId("1");
+	let defaultID = Mongoose.Types.ObjectId(1);
 
 	if (this.specimens.length < size) {
 		for (let i = this.specimens.length; i < size; i++)
