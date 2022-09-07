@@ -4,6 +4,7 @@ const specimenSchema = new Schema(
   {
     name: {
       type: String,
+	  required: true
     },
 
     planted: {
@@ -13,7 +14,7 @@ const specimenSchema = new Schema(
     previousYield: {
       type: Number,
     },
-    
+
     userNotes: {
       type: String
     },
@@ -21,6 +22,7 @@ const specimenSchema = new Schema(
     plant: {
         type: Schema.Types.ObjectId,
         ref: "Plant",
+		required: true
       },
 
   },
