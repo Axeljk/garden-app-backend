@@ -29,12 +29,7 @@ module.exports = {
           {
             id: user._id,
             username: user.username,
-            email: user.email,
-            password: user.password,
-            location:{
-            city: user.city,
-            state: user.state
-            }
+            email: user.email
           },
           process.env.DB_SECRET,
           {
