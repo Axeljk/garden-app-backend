@@ -1,4 +1,5 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, Types } = require("mongoose");
+const Mongoose = require("mongoose");
 
 const gardenSchema = new Schema(
   {
@@ -50,19 +51,22 @@ const gardenSchema = new Schema(
     toJSON: {
       virtuals: true,
     },
+	toObject: {
+		virtuals: true
+	},
     id: false,
   }
 );
 
 gardenSchema.pre("save", async function(next) {
 	let size = this.width * this.height;
-	console.log("Size of garden: ", size);
+	let defaultID = "63194a3e202ee4e0dcda5af7"; //Mongoose.Types.ObjectId(1);
 
 	if (this.specimens.length < size) {
 		for (let i = this.specimens.length; i < size; i++)
-			this.specimens.push(null)
+			this.specimens.push(defaultID)
 	}
-	console.log("FINAL Specimens:", this.specimens);
+
 	next();
 });
 
