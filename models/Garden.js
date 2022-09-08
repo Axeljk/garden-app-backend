@@ -51,13 +51,16 @@ const gardenSchema = new Schema(
     toJSON: {
       virtuals: true,
     },
+	toObject: {
+		virtuals: true
+	},
     id: false,
   }
 );
 
 gardenSchema.pre("save", async function(next) {
 	let size = this.width * this.height;
-	let defaultID = Mongoose.Types.ObjectId(1);
+	let defaultID = "63194a3e202ee4e0dcda5af7"; //Mongoose.Types.ObjectId(1);
 
 	if (this.specimens.length < size) {
 		for (let i = this.specimens.length; i < size; i++)
